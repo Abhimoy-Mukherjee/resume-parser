@@ -3,12 +3,12 @@ A tool that scores how well a resume matches a job description using AI
 ## Status
 In progress
 ## Techstack
-Python
+Python. 
 TBD
 ## Libraries
-Pydantic
-Python-dotenv
-Groq
-pypdf
-python docx
+Pydantic. 
+Python-dotenv. 
+Groq. 
+pypdf. 
+python docx. 
 TBD

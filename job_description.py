@@ -29,7 +29,7 @@ system_prompt = f"""
     If information for a list is missing, return an empty list.
     Do not invent the information.
 """
-job_description="""
+default_job_description="""
 About Stripe
 Stripe is a financial infrastructure platform for businesses. Millions of companies—from the world’s largest enterprises to the most ambitious startups—use Stripe to accept payments, grow their revenue, and accelerate new business opportunities. Our mission is to increase the GDP of the internet, and we have a staggering amount of work ahead. That means you have an unprecedented opportunity to put the global economy within everyone’s reach while doing the most important work of your career.
 
@@ -62,7 +62,7 @@ In-office expectations
 Office-assigned Stripes in most of our locations are currently expected to spend at least 50% of the time in a given month in their local office or with users. This expectation may vary depending on role, team and location. For example, Stripes in Stripe Delivery Center roles in Mexico City, Mexico, Bengaluru, India, and Dublin, Ireland work 100% from the office. Also, some teams have greater in-office attendance requirements, to appropriately support our users and workflows, which the hiring manager will discuss. This approach helps strike a balance between bringing people together for in-person collaboration and learning from each other, while supporting flexibility when possible.
 """
 
-def analyze_job_description(job_description: str):
+def analyze_job_description(job_description: str = default_job_description):
 
     user_prompt = f"Analyze the following job description: {job_description}"
 

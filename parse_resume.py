@@ -24,7 +24,6 @@ class Resume(BaseModel):
     projects: list[str] = []
     certifications: list[str] = []
 
-job = analyze_job_description()
 resume_schema = Resume.model_json_schema()
 def final_score(job,resume):
     match_schema = MatchResult.model_json_schema()

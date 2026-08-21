@@ -36,7 +36,7 @@ async def analyze_resume(resume_file: UploadFile=File(...), job_description:str=
         return{
             "name":parsed_resume.name,
             "score":result.score,
-            "details":result.details,
+            "details":result.model_dump(exclude={"score"}),
         }
     finally:
         temp_path.unlink(missing_ok=True)

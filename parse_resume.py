@@ -5,7 +5,13 @@ import json
 
 class MatchResult(BaseModel):
     score: float
-    details: dict
+    candidate_name: str | None = None
+    matching_skills: list[str] = []
+    missing_important_skills: list[str] = []
+    experience_requirement_met: str | None = None
+    final_verdict: str | None = None
+    improvement_suggestions: str | None = None
+
 class Experience(BaseModel):
     company: str | None = None
     role: str | None = None
@@ -64,6 +70,7 @@ def final_score(job,resume):
     answer=get_completions(messages, response_format)
     data = json.loads(answer)
     return MatchResult(**data)
+
 def parse_resume(resume_text):
     system_prompt = f"""
     You are an expert resume parser.

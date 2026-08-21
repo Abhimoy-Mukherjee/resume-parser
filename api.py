@@ -5,6 +5,7 @@ from parse_resume import parse_resume, final_score
 from job_description import analyze_job_description
 import tempfile
 from pathlib import Path
+from fastapi.staticfiles import StaticFiles
 
 app=FastAPI(title="Resume Parser API")
 
@@ -41,7 +42,6 @@ async def analyze_resume(resume_file: UploadFile=File(...), job_description:str=
     finally:
         temp_path.unlink(missing_ok=True)
 
-@app.get("/")
-def home():
-    return {"message": "Resume Parser API is running"}
+
+app.mount("/", StaticFiles(directory="frontend",html=True), name="frontend")
 

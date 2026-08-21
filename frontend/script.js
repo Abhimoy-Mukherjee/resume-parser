@@ -1,4 +1,4 @@
-const API = 'http://127.0.0.1:8000';
+const API = '';
 
 async function analyzeResume() {
   const fileInput = document.getElementById('resume-file');

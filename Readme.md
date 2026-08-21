@@ -1,49 +1,51 @@
-# Resume Parser
+# CVpulse
 
-A tool that parses resumes (PDF/DOCX), extracts structured candidate data using an LLM, and scores how well each candidate matches a given job description — ranking the top and bottom candidates automatically.
+An AI-powered resume parser that extracts structured candidate data from a resume and scores how well it matches a given job description.
+
+🔗 **Live demo:** https://cvpulse.onrender.com
+
+*(Free-tier hosting — the app may take ~30-50 seconds to wake up if it's been idle.)*
 
 ## Status
-Functional — core features working
+Fully functional — full-stack web app, containerized and deployed.
 
 ## How it works
-1. Drop resumes (`.pdf` / `.docx`) into a `resumes/` folder.
-2. Add your job description text to `job_description.txt`.
-3. Run `main.py` — it will:
-   - Parse the job description into structured fields (role, required/preferred skills, experience, education, responsibilities) via `analyze_job_description()`.
-   - Extract text from each resume and parse it into a structured schema (`Resume` model) via `parse_resume()`.
-   - Score each parsed resume against the job description via `final_score()`, returning a match percentage and details.
-   - Print the top 2 and bottom 2 candidates by score.
+1. Upload a resume (`.pdf` or `.docx`) and paste a job description into the web UI.
+2. On submit, the backend:
+   - Parses the job description into structured fields (role, required/preferred skills, experience, education, responsibilities) via `analyze_job_description()`.
+   - Extracts text from the resume and parses it into a structured schema (`Resume` model) via `parse_resume()`.
+   - Scores the resume against the job description via `final_score()`, returning a match percentage, matching/missing skills, and improvement suggestions.
+3. Results are displayed instantly in the browser, color-coded by match quality.
 
 ## Tech stack
-- Python (uv for dependency/environment management)
-- Groq API (`openai/gpt-oss-120b`) for LLM-based parsing and scoring
-- Pydantic for schema validation of parsed resume/job description/match result data
+- **Backend:** FastAPI, Python (uv for dependency/environment management)
+- **AI:** Groq API (`openai/gpt-oss-120b`) for LLM-based parsing and scoring
+- **Validation:** Pydantic schemas for structured, consistent LLM output
+- **Frontend:** HTML, CSS, vanilla JavaScript
+- **Deployment:** Docker, Render
+- **Reliability:** Rate-limited (5 requests/hour per IP) to protect the demo's API key from abuse
 
 ## Project structure
-- `main.py` — orchestrates reading resumes, parsing, scoring, and ranking
+- `api.py` — FastAPI app; exposes `/analyze` endpoint, serves the frontend as static files
 - `read.py` — extracts raw text from PDF/DOCX resumes
 - `parse_resume.py` — parses resume text into structured data; scores resume against job description
 - `job_description.py` — parses job description text into structured data
 - `llm_client.py` — wraps Groq API calls
-- `job_description.txt` — plain text job description input (placeholder by default)
+- `frontend/` — web UI (upload form, results display)
+- `Dockerfile`, `docker-compose.yml` — containerization
 
-## Libraries
-- pydantic
-- python-dotenv
-- groq
-- pypdf
-- python-docx
+## Running locally
+```bash
+uv sync
+uv run uvicorn api:app --reload
+```
+Visit `http://127.0.0.1:8000`
+
+Or with Docker:
+```bash
+docker compose up --build
+```
 
 ## Setup
-1. Clone the repo and install dependencies with `uv sync` (or `uv add` per package if setting up fresh).
+1. Clone the repo and install dependencies with `uv sync`.
 2. Create a `.env` file with your Groq API key:
-   ```
-   GROQ_API_KEY=your_key_here
-   ```
-3. Replace the placeholder text in `job_description.txt` with an actual job description.
-4. Add resumes to a `resumes/` folder (PDF or DOCX).
-5. Run:
-   ```
-   uv run main.py
-   ```
-

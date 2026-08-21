@@ -6,8 +6,16 @@ from job_description import analyze_job_description
 import tempfile
 from pathlib import Path
 from fastapi.staticfiles import StaticFiles
+from fastapi import Request
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 app=FastAPI(title="Resume Parser API")
+limiter=Limiter(key_func=get_remote_address)
+app.state.limiter=limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -17,7 +25,8 @@ app.add_middleware(
     allow_headers=["*"]
 )
 @app.post("/analyze")
-async def analyze_resume(resume_file: UploadFile=File(...), job_description:str=Form(...)):
+@limiter.limit("5/hour")
+async def analyze_resume(request:Request,resume_file: UploadFile=File(...), job_description:str=Form(...)):
     suffix=Path(resume_file.filename).suffix.lower()
     if suffix not in [".pdf",".docx"]:
         raise HTTPException(status_code=400, detail="Only PDF and DOCX files are supported.")

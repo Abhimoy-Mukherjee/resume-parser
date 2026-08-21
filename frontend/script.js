@@ -38,7 +38,7 @@ async function analyzeResume() {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data.detail || 'Something went wrong');
+        throw new Error(data.detail || data.error || 'Something went wrong');
     }
 
     renderResult(data);
@@ -51,13 +51,19 @@ async function analyzeResume() {
   }
 }
 
+function getScoreColor(score) {
+  if (score < 40) return '#dc2626'; 
+  if (score < 70) return '#d97706';   
+  return '#16a34a';                  
+}
+
 function renderResult(data) {
   const container = document.getElementById('result-container');
   const d = data.details;
 
   container.innerHTML = `
     <div class="result-card">
-      <div class="result-score">${data.score}%</div>
+      <div class="result-score" style="color:${getScoreColor(data.score)}">${data.score}%</div>
       <div class="result-name">Candidate: ${data.name || 'Unknown'}</div>
 
       <div class="detail-block">

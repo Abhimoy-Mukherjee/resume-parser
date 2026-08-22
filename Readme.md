@@ -4,7 +4,6 @@ An AI-powered resume parser that extracts structured candidate data from a resum
 
 🔗 **Live demo:** https://cvpulse.onrender.com
 
-*(Free-tier hosting — the app may take ~30-50 seconds to wake up if it's been idle.)*
 
 ## Status
 Fully functional — full-stack web app, containerized and deployed.
